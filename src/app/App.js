@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import SearchStatus from "./components/searchStatus";
 import Users from "./components/users";
 import api from "./api";
 
@@ -10,19 +9,18 @@ function App() {
     };
     const handleToggleBookMark = (id) => {
         setUsers(
-            users.map((el) => {
-                if (el._id === id) {
-                    console.log("true");
-                    return { ...el, bookmark: !el.bookmark };
+            users.filter((user) => {
+                if (user._id === id) {
+                    user.bookmark = !user.bookmark;
+                    return user;
                 }
-                return el;
+                return user;
             })
         );
     };
 
     return (
         <>
-            <SearchStatus length={users.length} />
             <Users
                 users={users}
                 onDelete={handleDelete}
