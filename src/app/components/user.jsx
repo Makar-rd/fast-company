@@ -1,7 +1,6 @@
 import React from "react";
 import Qualitie from "./qualitie";
 import BookMark from "./bookmark";
-
 import PropTypes from "prop-types";
 
 const User = ({
@@ -15,6 +14,8 @@ const User = ({
     bookmark,
     onToggleBookMark
 }) => {
+    console.log("Bookmark status:", bookmark);
+
     return (
         <tr>
             <td>{name}</td>

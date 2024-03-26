@@ -7,16 +7,17 @@ import api from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 
-const Usrs = ({ users: allUsers, ...rest }) => {
+const Users = ({ users: allUsers, ...rest }) => {
+    // console.log("allUsers", allUsers);
+    // console.log("rest", rest);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [currentUser, setCurrentUsers] = useState([]);
+    // const [currentUser, setCurrentUsers] = useState([]);
     const pageSize = 2;
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
-        api.users.fetchAll().then((data) => setCurrentUsers(data));
-        console.log("change carrent page");
+        // api.users.fetchAll().then((data) => setCurrentUsers(data));
     }, []);
     useEffect(() => {
         setCurrentPage(1);
@@ -30,9 +31,13 @@ const Usrs = ({ users: allUsers, ...rest }) => {
     };
 
     const filteredUsers = selectedProf
-        ? currentUser.filter((user) => user.profession._id === selectedProf._id)
-        : currentUser;
+        ? allUsers.filter(
+            (user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf)
+        )
+        : allUsers;
+    console.log("filteredUsers", filteredUsers);
     const count = filteredUsers.length;
+    console.log("count: ", count);
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
@@ -93,8 +98,8 @@ const Usrs = ({ users: allUsers, ...rest }) => {
     );
 };
 
-Usrs.propTypes = {
-    users: PropTypes.arrayOf(PropTypes.object).isRequired
+Users.propTypes = {
+    users: PropTypes.array
 };
 
-export default Usrs;
+export default Users;
