@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const BookMark = ({ status, ...rest }) => {
-    console.log("BookMark", status);
     return (
         <button {...rest}>
             <i className={"bi bi-bookmark" + (status ? "-fill" : "")}></i>
