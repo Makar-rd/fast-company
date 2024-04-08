@@ -16,6 +16,7 @@ const Users = () => {
     const pageSize = 8;
 
     const [users, setUsers] = useState();
+
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
@@ -63,7 +64,6 @@ const Users = () => {
         const clearFilter = () => {
             setSelectedProf();
         };
-
         return (
             <div className="d-flex">
                 {professions && (
@@ -72,13 +72,9 @@ const Users = () => {
                             selectedItem={selectedProf}
                             items={professions}
                             onItemSelect={handleProfessionSelect}
-                        />
-                        <button
                             className="btn btn-secondary mt-2"
-                            onClick={clearFilter}
-                        >
-                            Очистить
-                        </button>
+                        />
+                        <button onClick={clearFilter}>Очистить</button>
                     </div>
                 )}
 
@@ -106,7 +102,7 @@ const Users = () => {
             </div>
         );
     }
-    return "loading";
+    return "loading...";
 };
 
 Users.propTypes = {
