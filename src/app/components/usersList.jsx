@@ -13,7 +13,13 @@ const Users = () => {
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
+    const [handleSearchName, setHandleSearchName] = useState("");
     const pageSize = 8;
+
+    const searchName = ({ target }) => {
+        setHandleSearchName(target.value.trim());
+        setSelectedProf(undefined);
+    };
 
     const [users, setUsers] = useState();
 
@@ -44,6 +50,7 @@ const Users = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
+        setHandleSearchName("");
     };
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
@@ -53,7 +60,7 @@ const Users = () => {
     };
 
     if (users) {
-        const filteredUsers = selectedProf ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf)) : users;
+        const filteredUsers = handleSearchName ? users.filter((user) => user.name.toLowerCase().indexOf(handleSearchName.toLowerCase()) !== -1) : selectedProf ? users.filter((user) => JSON.stringify(user.profession) === JSON.stringify(selectedProf)) : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
             filteredUsers,
@@ -80,6 +87,20 @@ const Users = () => {
 
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+
+                    {/* <Search /> */}
+                    <form action="">
+                        <div>
+                            <input
+                                className="form-control form-control-lg mb-2"
+                                type="text"
+                                placeholder="Search..."
+                                name="searchName"
+                                value={handleSearchName}
+                                onChange={searchName}
+                            ></input>
+                        </div>
+                    </form>
 
                     {count > 0 && (
                         <UserTable
