@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 
 const BookMark = ({ status, ...rest }) => {
     return (
-        <button {...rest}>
+        <button
+            className={`btn ${status ? "btn-dark" : "btn-primary"}`}
+            {...rest}
+        >
             <i className={"bi bi-bookmark" + (status ? "-fill" : "")}></i>
         </button>
     );

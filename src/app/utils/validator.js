@@ -3,10 +3,21 @@ export function validator(data, config) {
 
     function validate(ValidateMethod, data, config) {
         let statusValidate;
+
+        if (typeof data !== 'string') {
+            // пришлось вставить чтоб не было ошибки
+            return;
+        }
+
         switch (ValidateMethod) {
-        case "isRequired":
+        case "isRequired": {
+            if (typeof data === "boolean") {
+                statusValidate = !data;
+            } else {
             statusValidate = data.trim() === "";
+            }
             break;
+        }
         case "isEmail": {
             const emailRegExp = /^\S+@\S+\.\S+$/g;
             statusValidate = !emailRegExp.test(data);
