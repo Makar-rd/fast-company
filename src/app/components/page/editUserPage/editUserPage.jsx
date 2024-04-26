@@ -22,17 +22,9 @@ const Edit = () => {
         completedMeetings: "",
         rate: ""
     });
-    // console.log("data", data);
     const [qualities, setQualities] = useState([]);
-    // console.log("qualities", qualities);
     const [errors, setErrors] = useState({});
     const [professions, setProfession] = useState([]);
-    // console.log("professions", professions);
-
-    // useEffect(() => {
-    //     api.professions.fetchAll().then((data) => setProfession(data));
-    //     api.qualities.fetchAll().then((data) => setQualities(data));
-    // }, []);
 
     const transformData = (data) => {
         // изменение ключей из апи
@@ -50,9 +42,7 @@ const Edit = () => {
                 qualities: transformData(qualities),
                 profession: profession ? profession._id : ""
             }));
-            console.log("data", data);
         });
-        // .finally(() => setLoading(false));
         api.qualities.fetchAll().then((data) => {
             const qualitiesList = Object.keys(data).map((optionName) => ({
                 value: data[optionName]._id,
@@ -246,6 +236,9 @@ const Edit = () => {
                         />
 
                         <button
+                            // style={{
+                            //     cursor: `${!isValid ? `no-drop` : `pointer`}`
+                            // }}
                             type="submit"
                             disabled={!isValid}
                             className="btn btn-primary w-100 mx-auto"
