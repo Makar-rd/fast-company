@@ -24,7 +24,7 @@ const TextAreaField = ({ value, onChange, error }) => {
                 className={inputClasses}
                 value={text} // Привязываем значение textarea к состоянию text
                 onChange={handleTextChange} // Обрабатываем изменения в textarea
-                rows={4} // Устанавливаем количество строк
+                rows={3} // Устанавливаем количество строк
             ></textarea>
             {/* Отображаем сообщение об ошибке, если оно есть */}
             {error && <div className="text-danger">{error}</div>}

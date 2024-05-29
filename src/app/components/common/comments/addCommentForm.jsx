@@ -3,12 +3,14 @@ import api from "../../../api";
 import SelectField from "../form/selectField";
 import TextAreaField from "../form/textAreaField";
 import { validator } from "../../../utils/validator";
+import PropTypes from "prop-types";
 
 const AddCommentForm = ({ onAddComment }) => {
     const [data, setData] = useState({
         users: "",
         text: ""
     });
+
     const [users, setUsers] = useState([]);
     const [errors, setErrors] = useState({});
 
@@ -55,14 +57,12 @@ const AddCommentForm = ({ onAddComment }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log("dataUser", data);
         const newComment = {
             userId: data.users,
             content: data.text,
             pageId: ""
         };
         api.comments.add(newComment).then((comment) => {
-            console.log("обновлен", comment);
             onAddComment(comment);
             setData({ users: "", text: "" });
         });
@@ -81,22 +81,6 @@ const AddCommentForm = ({ onAddComment }) => {
                     value={data.users}
                     error={errors.users}
                 />
-
-                {/* <div className="mb-4">
-                    <select className="form-select" name="userId" value="">
-                        <option disabled value="" selected>
-                            Выберите пользователя
-                        </option>
-                        {users.map((user) => (
-                            <option key={user.value} value={user.value}>
-                                {user.label}
-                            </option>
-                        ))}
-                        {/* <option>Доктор</option>
-                        <option>Тусер</option> 
-                    </select>
-                </div> */}
-
                 <div className="mb-4">
                     <label
                         htmlFor="exampleFormControlTextarea1"
@@ -128,6 +112,10 @@ const AddCommentForm = ({ onAddComment }) => {
             </div>
         </div>
     );
+};
+
+AddCommentForm.propTypes = {
+    onAddComment: PropTypes.func
 };
 
 export default AddCommentForm;

@@ -1,35 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Comment from "./comment";
-import api from "../../../api";
+import PropTypes from "prop-types";
 
 const CommentsList = ({ comments, onDelete }) => {
-    const [users, setUsers] = useState({});
-
-    useEffect(() => {
-        const userIds = comments.map((comment) => comment.userId);
-
-        userIds.forEach((userId) => {
-            api.users.getById(userId).then((user) => {
-                setUsers((prevUsers) => ({
-                    ...prevUsers,
-                    [userId]: user
-                }));
-            });
-        });
-    }, [comments]);
-
     return (
         <div>
             {comments.map((comment) => (
-                <Comment
-                    key={comment._id}
-                    comment={comment}
-                    onDelete={onDelete}
-                    user={users[comment.userId]}
-                />
+                <Comment key={comment._id} onDelete={onDelete} {...comment} />
             ))}
         </div>
     );
+};
+CommentsList.propTypes = {
+    comments: PropTypes.array.isRequired,
+    onDelete: PropTypes.func.isRequired
 };
 
 export default CommentsList;

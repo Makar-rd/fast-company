@@ -4,10 +4,10 @@ export function validator(data, config) {
     function validate(ValidateMethod, data, config) {
         let statusValidate;
 
-        if (typeof data !== 'string') {
-            // пришлось вставить чтоб не было ошибки
-            return;
-        }
+        // if (typeof data !== 'string') {
+        //     // пришлось вставить чтоб не было ошибки
+        //     return;
+        // }
 
         switch (ValidateMethod) {
         case "isRequired": {

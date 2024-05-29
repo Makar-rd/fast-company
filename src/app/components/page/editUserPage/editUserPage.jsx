@@ -94,12 +94,6 @@ const Edit = () => {
                 message: "Обязательно выберите качества",
                 value: 1
             }
-        },
-        completedMeetings: {
-            isRequired: { message: "Поле обязательно для заполнения" }
-        },
-        rate: {
-            isRequired: { message: "Поле обязательно для заполнения" }
         }
     };
 
@@ -239,9 +233,6 @@ const Edit = () => {
                         />
 
                         <button
-                            // style={{
-                            //     cursor: `${!isValid ? `no-drop` : `pointer`}`
-                            // }}
                             type="submit"
                             disabled={!isValid}
                             className="btn btn-primary w-100 mx-auto"
