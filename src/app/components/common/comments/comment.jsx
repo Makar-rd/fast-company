@@ -14,8 +14,10 @@ const Comment = ({
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
         api.users.getById(userId).then((user) => {
             setUsers(user);
+            setIsLoading(false);
         });
     }, []);
 
@@ -66,11 +68,10 @@ const Comment = ({
     );
 };
 Comment.propTypes = {
-    onDelete: PropTypes.func.isRequired,
-    userId: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-    _id: PropTypes.string.isRequired
+    onDelete: PropTypes.func,
+    userId: PropTypes.string,
+    content: PropTypes.string,
+    created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    _id: PropTypes.string
 };
 export default Comment;

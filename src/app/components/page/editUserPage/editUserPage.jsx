@@ -11,7 +11,7 @@ import BackButton from "../../common/backButton";
 const Edit = () => {
     const params = useParams();
     const { userId } = params;
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
 
     const [data, setData] = useState({
@@ -36,6 +36,7 @@ const Edit = () => {
     };
 
     useEffect(() => {
+        setIsLoading(true);
         api.users.getById(userId).then(({ profession, qualities, ...data }) => {
             setData((prevState) => ({
                 ...prevState,
@@ -43,6 +44,7 @@ const Edit = () => {
                 qualities: transformData(qualities),
                 profession: profession ? profession._id : ""
             }));
+            setIsLoading(false);
         });
         api.qualities.fetchAll().then((data) => {
             const qualitiesList = Object.keys(data).map((optionName) => ({
@@ -52,18 +54,13 @@ const Edit = () => {
             }));
             setQualities(qualitiesList);
         });
-        api.professions
-            .fetchAll()
-            .then((data) => {
-                const professionsList = Object.keys(data).map(
-                    (professionName) => ({
-                        label: data[professionName].name,
-                        value: data[professionName]._id
-                    })
-                );
-                setProfession(professionsList);
-            })
-            .finally(() => setLoading(false));
+        api.professions.fetchAll().then((data) => {
+            const professionsList = Object.keys(data).map((professionName) => ({
+                label: data[professionName].name,
+                value: data[professionName]._id
+            }));
+            setProfession(professionsList);
+        });
     }, []);
 
     const handleChange = (target) => {
@@ -151,97 +148,113 @@ const Edit = () => {
         });
     };
 
-    if (loading) {
-        return (
-            <div className="d-flex justify-content-center align-items-center vh-100 ">
-                <div className="loading-container border border-2  w-50 p-3 shadow p-3 mb-5 bg-body-tertiary rounded">
-                    <span className="d-flex justify-content-center ">
-                        Loading...
-                    </span>
-                </div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="d-flex justify-content-center align-items-center vh-100 ">
+    //             <div className="loading-container border border-2  w-50 p-3 shadow p-3 mb-5 bg-body-tertiary rounded">
+    //                 <span className="d-flex justify-content-center ">
+    //                     Loading...
+    //                 </span>
+    //             </div>
+    //         </div>
+    //     );
+    // }
 
     return (
         <div className="container mt-5">
-            <BackButton />
-
-            <div className="row">
-                <div className="col-md-6 offset-md-3 shadow p-4">
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Имя"
-                            name="name"
-                            value={data.name}
-                            onChange={handleChange}
-                            error={errors.name}
-                        />
-
-                        <TextField
-                            label="Электронная почта"
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            error={errors.email}
-                        />
-
-                        <SelectField
-                            label="Выберите вашу профессию"
-                            defaultOption="Choose..."
-                            name="profession"
-                            onChange={handleChange}
-                            options={professions}
-                            value={data.profession}
-                            error={errors.profession}
-                        />
-
-                        <RadioField
-                            options={[
-                                { name: "Male", value: "male" },
-                                { name: "Female", value: "female" },
-                                { name: "Other", value: "other" }
-                            ]}
-                            value={data.sex}
-                            name="sex"
-                            onChange={handleChange}
-                            label="Выберите ваш пол"
-                        />
-                        <MultiSelectField
-                            options={qualities}
-                            onChange={handleChange}
-                            defaultValue={data.qualities}
-                            error={errors.qualities}
-                            name="qualities"
-                            label="Выберите ваши качества"
-                        />
-
-                        <TextField
-                            label="Встречался, раз:"
-                            name="completedMeetings"
-                            value={data.completedMeetings.toString()}
-                            onChange={handleChange}
-                            error={errors.completedMeetings}
-                        />
-
-                        <TextField
-                            label="Оценка:"
-                            name="rate"
-                            value={data.rate.toString()}
-                            onChange={handleChange}
-                            error={errors.rate}
-                        />
-
-                        <button
-                            type="submit"
-                            disabled={!isValid}
-                            className="btn btn-primary w-100 mx-auto"
-                        >
-                            {isValid ? "Обновить" : <i className="bi bi-ban" />}
-                        </button>
-                    </form>
+            {isLoading ? (
+                <div className="d-flex justify-content-center align-items-center vh-100 ">
+                    <div className="loading-container border border-2  w-50 p-3 shadow p-3 mb-5 bg-body-tertiary rounded">
+                        <span className="d-flex justify-content-center">
+                            Loading...
+                        </span>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <>
+                    <BackButton />
+
+                    <div className="row">
+                        <div className="col-md-6 offset-md-3 shadow p-4">
+                            <form onSubmit={handleSubmit}>
+                                <TextField
+                                    label="Имя"
+                                    name="name"
+                                    value={data.name}
+                                    onChange={handleChange}
+                                    error={errors.name}
+                                />
+
+                                <TextField
+                                    label="Электронная почта"
+                                    name="email"
+                                    value={data.email}
+                                    onChange={handleChange}
+                                    error={errors.email}
+                                />
+
+                                <SelectField
+                                    label="Выберите вашу профессию"
+                                    defaultOption="Choose..."
+                                    name="profession"
+                                    onChange={handleChange}
+                                    options={professions}
+                                    value={data.profession}
+                                    error={errors.profession}
+                                />
+
+                                <RadioField
+                                    options={[
+                                        { name: "Male", value: "male" },
+                                        { name: "Female", value: "female" },
+                                        { name: "Other", value: "other" }
+                                    ]}
+                                    value={data.sex}
+                                    name="sex"
+                                    onChange={handleChange}
+                                    label="Выберите ваш пол"
+                                />
+                                <MultiSelectField
+                                    options={qualities}
+                                    onChange={handleChange}
+                                    defaultValue={data.qualities}
+                                    error={errors.qualities}
+                                    name="qualities"
+                                    label="Выберите ваши качества"
+                                />
+
+                                <TextField
+                                    label="Встречался, раз:"
+                                    name="completedMeetings"
+                                    value={data.completedMeetings.toString()}
+                                    onChange={handleChange}
+                                    error={errors.completedMeetings}
+                                />
+
+                                <TextField
+                                    label="Оценка:"
+                                    name="rate"
+                                    value={data.rate.toString()}
+                                    onChange={handleChange}
+                                    error={errors.rate}
+                                />
+
+                                <button
+                                    type="submit"
+                                    disabled={!isValid}
+                                    className="btn btn-primary w-100 mx-auto"
+                                >
+                                    {isValid ? (
+                                        "Обновить"
+                                    ) : (
+                                        <i className="bi bi-ban" />
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

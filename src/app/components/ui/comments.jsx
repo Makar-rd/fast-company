@@ -32,7 +32,7 @@ const Comments = () => {
         <div>
             <div className="card mb-2">
                 <div className="card-body">
-                    <AddCommentForm onAddComment={handleAddComment} />
+                    <AddCommentForm onSubmit={handleAddComment} />
                 </div>
             </div>
             {comments.length > 0 && ( // это нужно для того чтоб если нет коментариев, то блока нет!
